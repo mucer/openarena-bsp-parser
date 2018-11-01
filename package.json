@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "pngjs": "^3.3.3",
+    "struct": "0.0.12",
     "tga": "^1.0.3",
     "yauzl": "^2.10.0"
   }

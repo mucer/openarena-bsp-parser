@@ -27,7 +27,9 @@ async function readMapDir(dir: string) {
     }
 
     const levelshotDir = path.join(__dirname, 'levelshots');
-    fs.mkdirSync(levelshotDir);
+    if (!fs.existsSync(levelshotDir)) {
+        fs.mkdirSync(levelshotDir);
+    }
     const maps = mapStore.getMaps();
     for (let map of maps) {
         if (map.levelshot && map.levelshot.ext === 'tga') {
