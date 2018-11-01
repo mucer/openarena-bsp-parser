@@ -115,6 +115,7 @@ function readMapsFromZip(maps: MapStore, file: string): Promise<void> {
                     let matcher: RegExpMatchArray;
                     if (matcher = mapPattern.exec(fileName)) {
                         maps.addMap(pkg, matcher[1]);
+                        
                         zipfile.readEntry();
                     } else if (matcher = levelshotPattern.exec(fileName)) {
                         readBuffer(zipfile, entry).then(
