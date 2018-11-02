@@ -1,4 +1,4 @@
-import { Entities } from "./models/entities";
+import { Entities } from './models/entities';
 
 const CHAR_OBJ_START = '{'.charCodeAt(0);
 const CHAR_OBJ_END = '}'.charCodeAt(0);

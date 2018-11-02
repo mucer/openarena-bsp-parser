@@ -1,15 +1,15 @@
-import { OAMap, Levelshot } from "./models";
+import { Levelshot } from './models';
+import { OaMap } from './oa-map';
 
 export class MapStore {
-    private maps: OAMap[] = [];
+    private maps: OaMap[] = [];
 
     private levelshots: { [name: string]: Levelshot } = {};
 
     public addMap(pkg: string, name: string) {
-        this.maps.push({
-            pkg,
-            name
-        });
+        const map = new OaMap(pkg, name);
+        this.maps.push(map);
+        return map;
     }
 
     public addLevelshot(name: string, ext: string, data: Buffer) {
@@ -19,7 +19,7 @@ export class MapStore {
         };
     }
 
-    public getMaps(): OAMap[] {
+    public getMaps(): OaMap[] {
         Object.keys(this.levelshots)
             .filter(name => this.maps.every(m => m.name !== name))
             .forEach(name => console.warn(`No map for levelshot '${name}' found!`));

@@ -1,17 +1,17 @@
-import { readMapDir } from "./pk3-parser/pk3-parser";
-import { OAMap } from "./pk3-parser/models";
-import { tga2png } from "./utils/tga2png";
+import { readMapDir, readMapsFromPk3 } from './pk3-parser/pk3-parser';
+import { tga2png } from './utils/tga2png';
 import * as path from 'path';
 import * as fs from 'fs-extra';
+import { OaMap } from './pk3-parser/oa-map';
 
-const baseDir = 'D:/Spiele/openarena-0.8.8/baseoa';
+const baseDir = path.join(__dirname, '..', 'assets');
 const levelshotDir = path.join(__dirname, 'levelshots');
 readMapDir(baseDir).then(maps => {
-    console.log(maps);
-    extractLevelshots(maps, levelshotDir);
+    maps.forEach(m => console.log(m.toString()));
+    // extractLevelshots(maps, levelshotDir);
 });
 
-async function extractLevelshots(maps: OAMap[], dir: string) {
+async function extractLevelshots(maps: OaMap[], dir: string) {
     await fs.mkdirp(dir);
     for (let map of maps) {
         if (map.levelshot && map.levelshot.ext === 'tga') {

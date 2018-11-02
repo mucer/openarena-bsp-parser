@@ -1,4 +1,4 @@
-import { Stream } from "stream";
+import { Stream } from 'stream';
 
 export function stream2buffer(stream: Stream): Promise<Buffer> {
     return new Promise((resolve, reject) => {

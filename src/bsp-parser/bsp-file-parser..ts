@@ -15,5 +15,3 @@ export function parseBspFile(buffer: Buffer): BspFile {
         entities
     }
 }
-
-

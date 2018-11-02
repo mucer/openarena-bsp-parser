@@ -17,7 +17,7 @@
     "@types/fs-extra": "^5.0.4",
     "@types/node": "^10.12.1",
     "@types/pngjs": "^3.3.2",
-    "@types/yauzl": "^2.9.0",
+    "@types/unzipper": "^0.9.1",
     "typescript": "^3.1.5"
   },
   "dependencies": {
@@ -25,6 +25,6 @@
     "pngjs": "^3.3.3",
     "struct": "0.0.12",
     "tga": "^1.0.3",
-    "yauzl": "^2.10.0"
+    "unzipper": "^0.9.4"
   }
 }
