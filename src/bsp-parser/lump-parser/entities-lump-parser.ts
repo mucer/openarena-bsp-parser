@@ -1,11 +1,12 @@
-import { Entities } from './models/entities';
+import { Entities } from '../models/entities';
+import { Lump } from '../models/lump';
 
 const CHAR_OBJ_START = '{'.charCodeAt(0);
 const CHAR_OBJ_END = '}'.charCodeAt(0);
 const CHAR_STR = '"'.charCodeAt(0);
 
 // TODO improve error messages (include index, ...)
-export function parseEntitiesLump(buffer: Buffer, offset: number, length: number): Entities {
+export function parseEntitiesLump(buffer: Buffer, { offset, length }: Lump): Entities {
     let entity: { [key: string]: string } | undefined;
     let str: string | undefined;
     let key: string | undefined;

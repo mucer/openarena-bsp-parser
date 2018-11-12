@@ -1,0 +1,19 @@
+export enum LumpType {
+    ENTITIES,
+    SHADERS,
+    PLANES,
+    NODES,
+    LEAFS,
+    LEAF_SURFACES,
+    LEAF_BRUSHES,
+    MODELS,
+    BRUSHES,
+    BRUSH_SIDES,
+    DRAW_VERTS,
+    DRAW_INDEXES,
+    FOGS,
+    SURFACES,
+    LIGHTMAPS,
+    LIGHTGRID,
+    VISIBILITY
+}
