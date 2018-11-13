@@ -30,6 +30,20 @@ export class DrawVertStruct {
         }
     }
 
+    public getSt(): number[] {
+        return [
+            this.buffer.readFloatLE(this.offset + OFFSET_ST),
+            this.buffer.readFloatLE(this.offset + OFFSET_ST + 4)
+        ];
+    }
+
+    public getLightmap(): number[] {
+        return [
+            this.buffer.readFloatLE(this.offset + OFFSET_LIGHTMAP),
+            this.buffer.readFloatLE(this.offset + OFFSET_LIGHTMAP + 4)
+        ];
+    }
+
     public getColor(): Rgba {
         return {
             r: this.buffer.readUInt8(this.offset + OFFSET_COLOR),

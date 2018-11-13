@@ -3,5 +3,5 @@ import { Rgba } from "./rgba";
 
 export interface Vert {
     position: Vector;
-    color: Rgba;
+    color?: Rgba;
 }

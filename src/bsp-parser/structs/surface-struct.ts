@@ -1,4 +1,5 @@
 import { SurfaceType } from "../models/surface-type";
+import { Vector } from "../models/vector";
 
 // typedef struct {
 // 	int			shaderNum;
@@ -48,6 +49,10 @@ export class SurfaceStruct {
     constructor(private buffer: Buffer) {
     }
 
+    public getShaderNum(): number {
+        return this.buffer.readInt32LE(this.offset + OFFSET_SHADER_NUM);
+    }
+
     public getType(): SurfaceType {
         return this.buffer.readInt32LE(this.offset + OFFSET_SURFACE_TYPE);
     }
@@ -64,7 +69,24 @@ export class SurfaceStruct {
         return this.buffer.readUInt32LE(this.offset + OFFSET_PATCH_WIDTH);
     }
 
+    public getFirstIndex(): number {
+        return this.buffer.readInt32LE(this.offset + OFFSET_FIRST_INDEX);
+    }
+
+    public getNumIndexes(): number {
+        return this.buffer.readInt32LE(this.offset + OFFSET_NUM_INDEXES);
+    }
+
     public getPatchHeight(): number {
         return this.buffer.readUInt32LE(this.offset + OFFSET_PATCH_HEIGHT);
+    }
+
+    public getLightmapVec(index: number): Vector {
+        const offset = this.offset + index * 12;
+        return {
+            x: this.buffer.readFloatLE(offset + OFFSET_LIGHTMAP_VECS),
+            y: this.buffer.readFloatLE(offset + OFFSET_LIGHTMAP_VECS + 4),
+            z: this.buffer.readFloatLE(offset + OFFSET_LIGHTMAP_VECS + 8)
+        };
     }
 }
