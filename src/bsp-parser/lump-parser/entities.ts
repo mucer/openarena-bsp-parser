@@ -1,5 +1,4 @@
-import { Entities } from '../models/entities';
-import { Lump } from '../models/lump';
+import { Entities, Lump } from '../../models';
 
 const CHAR_OBJ_START = '{'.charCodeAt(0);
 const CHAR_OBJ_END = '}'.charCodeAt(0);

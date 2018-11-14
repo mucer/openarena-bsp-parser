@@ -1,5 +1,4 @@
-import { Lump } from "../models/lump";
-import { LumpType } from "../models/lump-type";
+import { Lump, LumpType } from "../../models";
 
 const OFFSET_VERSION = 4;
 const OFFSET_LUMPS = OFFSET_VERSION + 4;

@@ -1,4 +1,4 @@
-import { Vector } from "../models/vector";
+import { Vector } from "../../models";
 
 // typedef struct {
 // 	vec3_t		xyz;

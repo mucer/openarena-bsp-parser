@@ -1,12 +1,6 @@
-
-import { Lump } from '../models/lump';
-import { Surface } from '../models/surface';
-import { SurfaceType } from '../models/surface-type';
-import { Vector } from '../models/vector';
+import { Lump, Shader, Surface, SurfaceType, Vert } from '../../models';
 import { DrawVertStruct } from '../structs/draw-vert-struct';
 import { SurfaceStruct } from '../structs/surface-struct';
-import { Vert } from '../models/vert';
-import { Shader } from '../models/shader';
 
 export function parseSurfaces(buffer: Buffer, surfaceLump: Lump, drawVertsLump: Lump, drawIndexesLump: Lump, shaders: Shader[]): any[] {
     if (surfaceLump.length % SurfaceStruct.LENGTH) {

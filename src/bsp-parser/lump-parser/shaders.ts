@@ -1,5 +1,4 @@
-import { Lump } from "../models/lump";
-import { Shader } from "../models/shader";
+import { Lump, Shader } from "../../models";
 import { ShaderStruct } from "../structs/shader-struct";
 
 const SURF_NODAMAGE = 0x1; // never give falling damage

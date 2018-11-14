@@ -1,31 +1,30 @@
 {
-  "name": "oa-map-preview",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "openarena-pk3-parser",
+  "version": "0.1.0",
+  "description": "This library can be used to inspect OpenArena PK3 files and the contained BSP files",
+  "main": "dist/index.js",
   "scripts": {
+    "build": "rimraf dist && tsc",
     "build:w": "tsc -w",
     "exec:bsp": "tsc && node dist/test-bsp-parser.js",
+    "exec:pk3": "tsc && node dist/test-pk3-parser.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Daniel Leib",
   "repository": {
     "type": "git",
-    "url": "git@github.com:mucer/openarena-map-preview.git"
+    "url": "git@github.com:mucer/openarena-pk3-parser.git"
   },
   "license": "ISC",
   "devDependencies": {
     "@types/fs-extra": "^5.0.4",
-    "@types/node": "^10.12.1",
-    "@types/pngjs": "^3.3.2",
+    "@types/node": "^10.12.7",
     "@types/unzipper": "^0.9.1",
-    "typescript": "^3.1.5"
+    "rimraf": "^2.6.2",
+    "typescript": "^3.1.6"
   },
   "dependencies": {
-    "canvas": "^2.0.1",
-    "fs-extra": "^7.0.0",
-    "pngjs": "^3.3.3",
-    "tga": "^1.0.3",
+    "fs-extra": "^7.0.1",
     "unzipper": "^0.9.4"
   }
 }
