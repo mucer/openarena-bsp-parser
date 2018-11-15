@@ -25,7 +25,7 @@ export class Pk3Parser {
                     const pk3 = await this.parsePk3(absFile);
                     pk3s.addFile(pk3);
                 } catch (e) {
-                    console.log(`Could not read package '${absFile}': ${e && e.message || e}`);
+                    console.info(`Could not read package '${absFile}': ${e && e.message || e}`);
                 }
             }
         }
@@ -68,7 +68,7 @@ export class Pk3Parser {
             const streamNext = (index: number) => {
                 const file = pk3Files[index];
                 const paths = pathsForFile[file];
-                console.log(`Reading PK3 file '${file}'`);
+                console.info(`Reading PK3 file '${file}'`);
 
                 let wait = false;
                 const entries: unzipper.Entry[] = [];

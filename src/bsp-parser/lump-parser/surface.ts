@@ -60,7 +60,8 @@ export function parseSurfaces(buffer: Buffer, surfaceLump: Lump, drawVertsLump: 
         }
     }
 
-    console.log(`parsed surfaces: total=${surfaces.length}, meshes=${numMeshes}, triSrufs=${numTriSurfs}, faces=${numFaces}, flares=${numFlares}`);
+    console.debug(`parsed surfaces: total=${surfaces.length}, meshes=${numMeshes}, `
+        + `triSrufs=${numTriSurfs}, faces=${numFaces}, flares=${numFlares}`);
 
     return surfaces;
 }
