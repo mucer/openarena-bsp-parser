@@ -1,18 +1,14 @@
-import { Dictionary } from "../models";
+import { Dictionary, Pk3Entry } from "../models";
 import { Pk3File } from "./pk3-file";
 export declare class Pk3Collection {
     pk3s: Dictionary<Pk3File>;
-    addPk3(pk3: Pk3File): void;
-    getMapPath(name: string, pkgName?: string): string | undefined;
-    getLevelshots(): string[];
-    getLevelshotPath(name: string, pkgName?: string): string | undefined;
-    collectPaths(cb: (pk3: Pk3File) => Dictionary<string>): {
-        pk3: Pk3File;
-        id: string;
-        path: string;
-    }[];
-    find<T>(cb: (pk3: Pk3File) => T, pkgName?: string): {
-        pk3: Pk3File;
-        value: T;
-    } | undefined;
+    getFiles(): Pk3File[];
+    addFile(pk3: Pk3File): void;
+    getMap(name: string, pkgName?: string): Pk3Entry | undefined;
+    getLevelshots(): Pk3Entry[];
+    getLevelshot(name: string, pkgName?: string): Pk3Entry | undefined;
+    getTexture(path: string): Pk3Entry | undefined;
+    private collectPaths;
+    private findEntry;
+    private find;
 }

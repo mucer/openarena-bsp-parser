@@ -23,7 +23,7 @@ export class Pk3Parser {
                 const absFile = path.join(dir, file);
                 try {
                     const pk3 = await this.parsePk3(absFile);
-                    pk3s.addPk3(pk3);
+                    pk3s.addFile(pk3);
                 } catch (e) {
                     console.log(`Could not read package '${absFile}': ${e && e.message || e}`);
                 }
@@ -32,24 +32,36 @@ export class Pk3Parser {
         return pk3s;
     }
 
+    public loadEntry(entry: Pk3Entry): Promise<Buffer> {
+        return new Promise((resolve, reject) => {
+            fs.createReadStream(entry.pk3Path)
+                .pipe(unzipper.Parse())
+                .on('entry', (e: unzipper.Entry) => {
+                    if (e.path === entry.path) {
+                        e.buffer().then(resolve, reject);
+                    } else {
+                        e.autodrain();
+                    }
+                })
+                .on('error', reject);
+        });
+    }
+
     /**
      * The files will not be streamed in the same order than the input.
-     * 
-     * @param files Files with should be stream in format "[abs path to pk3]::[path to file]"
      */
-    public stream(files: string[]): Stream {
+    public streamEntries(entries: Pk3Entry[]): Stream {
         const stream: Stream = new Stream();
 
-        if (!files || !files.length) {
+        if (!entries || !entries.length) {
             stream.emit('end');
         } else {
             const pathsForFile: Dictionary<string[]> = {};
-            files.forEach(f => {
-                const [file, path] = f.split('::');
-                if (!pathsForFile[file]) {
-                    pathsForFile[file] = [];
+            entries.forEach(e => {
+                if (!pathsForFile[e.pk3Path]) {
+                    pathsForFile[e.pk3Path] = [];
                 }
-                pathsForFile[file].push(path);
+                pathsForFile[e.pk3Path].push(e.path);
             });
             const pk3Files = Object.keys(pathsForFile);
 
@@ -70,7 +82,7 @@ export class Pk3Parser {
                                 buffer,
                                 wait: false,
                                 next: readNextEntry
-                            } as Pk3Entry;
+                            } as Pk3StreamEntry;
                             stream.emit('entry', pk3Entry);
 
                             if (!pk3Entry.wait) {
@@ -78,17 +90,17 @@ export class Pk3Parser {
                                 readNextEntry();
                             }
                         });
-                    } 
+                    }
                 }
 
                 fs.createReadStream(file)
                     .pipe(unzipper.Parse())
                     .on('entry', (e: unzipper.Entry) => {
                         if (paths.includes(e.path)) {
-                           entries.push(e);
-                           if (!wait) {
-                               readNextEntry();
-                           }
+                            entries.push(e);
+                            if (!wait) {
+                                readNextEntry();
+                            }
                         } else {
                             e.autodrain();
                         }
@@ -122,7 +134,7 @@ export class Pk3Parser {
     private parsePk3Entry(entry: unzipper.Entry, pk3: Pk3File): Promise<void> {
         var fileName = entry.path;
 
-        let matcher: RegExpMatchArray;
+        let matcher: RegExpMatchArray | null;
         if (matcher = PATTERN_MAP.exec(fileName)) {
             pk3.addMap(matcher[1], fileName);
         } else if (matcher = PATTERN_LEVELSHOT.exec(fileName)) {
@@ -133,4 +145,13 @@ export class Pk3Parser {
 
         return entry.autodrain().promise();
     }
+}
+
+export interface Pk3StreamEntry {
+    path: string;
+    buffer: Buffer;
+    // if this flag is set to true, the stream will wait util next() is called
+    wait: boolean;
+    // unblock the stream
+    next(): void;
 }

@@ -1,5 +1,6 @@
 import { basename }from 'path';
 import { Dictionary } from "../models";
+import { pathExists } from 'fs-extra';
 
 export class Pk3File {
     private name: string;
@@ -46,5 +47,12 @@ export class Pk3File {
         if (!this.textures.includes(path)) {
             this.textures.push(path);
         }
+    }
+
+    public getTexturePath(path: string):string | undefined {
+        const fn = path.includes('.') 
+            ? (t:string) => t === path
+            : (t:string) => t.slice(0, -4) === path;
+        return  this.textures.find(fn);
     }
 }

@@ -1,24 +1,25 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var models_1 = require("../models");
-var entities_1 = require("./lump-parser/entities");
-var shaders_1 = require("./lump-parser/shaders");
-var surface_1 = require("./lump-parser/surface");
-var header_struct_1 = require("./structs/header-struct");
+const models_1 = require("../models");
+const entities_1 = require("./lump-parser/entities");
+const shaders_1 = require("./lump-parser/shaders");
+const surface_1 = require("./lump-parser/surface");
+const header_struct_1 = require("./structs/header-struct");
 function parseBspFile(buffer) {
-    var header = new header_struct_1.HeaderStruct(buffer);
+    const header = new header_struct_1.HeaderStruct(buffer);
     // qfiles.h
-    var entitiesLump = header.getLump(models_1.LumpType.ENTITIES);
-    var shadersLump = header.getLump(models_1.LumpType.SHADERS);
-    var surfaceLump = header.getLump(models_1.LumpType.SURFACES);
-    var drawVertsLump = header.getLump(models_1.LumpType.DRAW_VERTS);
-    var drawIndexesLump = header.getLump(models_1.LumpType.DRAW_INDEXES);
-    var entities = entities_1.parseEntitiesLump(buffer, entitiesLump);
-    var shaders = shaders_1.parseShaders(buffer, shadersLump);
-    var surfaces = surface_1.parseSurfaces(buffer, surfaceLump, drawVertsLump, drawIndexesLump, shaders);
+    const entitiesLump = header.getLump(models_1.LumpType.ENTITIES);
+    const shadersLump = header.getLump(models_1.LumpType.SHADERS);
+    const surfaceLump = header.getLump(models_1.LumpType.SURFACES);
+    const drawVertsLump = header.getLump(models_1.LumpType.DRAW_VERTS);
+    const drawIndexesLump = header.getLump(models_1.LumpType.DRAW_INDEXES);
+    const entities = entities_1.parseEntitiesLump(buffer, entitiesLump);
+    const shaders = shaders_1.parseShaders(buffer, shadersLump);
+    const surfaces = surface_1.parseSurfaces(buffer, surfaceLump, drawVertsLump, drawIndexesLump);
     return {
-        entities: entities,
-        surfaces: surfaces
+        entities,
+        shaders,
+        surfaces
     };
 }
 exports.parseBspFile = parseBspFile;

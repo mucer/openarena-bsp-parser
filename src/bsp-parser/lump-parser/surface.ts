@@ -1,8 +1,8 @@
-import { Lump, Shader, Surface, SurfaceType, Vert } from '../../models';
+import { Lump, Surface, SurfaceType, Vert } from '../../models';
 import { DrawVertStruct } from '../structs/draw-vert-struct';
 import { SurfaceStruct } from '../structs/surface-struct';
 
-export function parseSurfaces(buffer: Buffer, surfaceLump: Lump, drawVertsLump: Lump, drawIndexesLump: Lump, shaders: Shader[]): any[] {
+export function parseSurfaces(buffer: Buffer, surfaceLump: Lump, drawVertsLump: Lump, drawIndexesLump: Lump): any[] {
     if (surfaceLump.length % SurfaceStruct.LENGTH) {
         throw new Error(`The surface lumps length must be a multiple of ${SurfaceStruct.LENGTH}, was ${surfaceLump.length}`);
     }
@@ -25,7 +25,7 @@ export function parseSurfaces(buffer: Buffer, surfaceLump: Lump, drawVertsLump: 
 
     for (let i = 0; i < numSurface; i += 1) {
         surfaceStruct.offset = surfaceLump.offset + i * SurfaceStruct.LENGTH;
-        
+
         const numIndexes = surfaceStruct.getNumIndexes();
         if (numIndexes % 3) {
             throw new Error(`The face indexes must be a multiple of 3, was ${drawIndexesLump.length}`);
@@ -33,13 +33,11 @@ export function parseSurfaces(buffer: Buffer, surfaceLump: Lump, drawVertsLump: 
         const type = surfaceStruct.getType();
         const verts = allVerts.slice(surfaceStruct.getFirstVert(), surfaceStruct.getFirstVert() + surfaceStruct.getNumVerts());
         const indexes = allIndexes.slice(surfaceStruct.getFirstIndex(), surfaceStruct.getFirstIndex() + numIndexes);
-        const shader: Shader = shaders[surfaceStruct.getShaderNum()];
 
         const surface: Surface = surfaces[i] = {
             type,
             verts,
-            indexes,
-            shader
+            shader: surfaceStruct.getShaderNum()
         };
 
         switch (type) {
@@ -50,7 +48,8 @@ export function parseSurfaces(buffer: Buffer, surfaceLump: Lump, drawVertsLump: 
                 numTriSurfs += 1;
                 break;
             case SurfaceType.FACE:
-                parseFace(surfaceStruct, surface);
+                surface.indexes = indexes;
+                surface.normal = surfaceStruct.getLightmapVec(2);
                 numFaces += 1;
                 break;
             case SurfaceType.FLARE:
@@ -66,11 +65,6 @@ export function parseSurfaces(buffer: Buffer, surfaceLump: Lump, drawVertsLump: 
     return surfaces;
 }
 
-function parseFace(surfaceStruct: SurfaceStruct, surface: Surface) {
-    // take the plane information from the lightmap vector
-    surface.normal = surfaceStruct.getLightmapVec(2);
-}
-
 function parseVerts(buffer: Buffer, drawVertLump: Lump): Vert[] {
     const vert = new DrawVertStruct(buffer);
     const numVerts = drawVertLump.length / DrawVertStruct.LENGTH;
@@ -79,6 +73,7 @@ function parseVerts(buffer: Buffer, drawVertLump: Lump): Vert[] {
         vert.offset = drawVertLump.offset + i * DrawVertStruct.LENGTH;
         verts[i] = {
             position: vert.getPosition(),
+            st: vert.getSt()
             // color: vert.getColor()
         };
     }
@@ -89,7 +84,7 @@ function parseIndexes(buffer: Buffer, lump: Lump): number[] {
     const num = lump.length / 4;
     const indexes: number[] = [];
     for (let i = 0; i < num; i++) {
-        indexes[i] = buffer.readInt32LE(lump.offset + i*4);
-    } 
+        indexes[i] = buffer.readInt32LE(lump.offset + i * 4);
+    }
     return indexes;
 }

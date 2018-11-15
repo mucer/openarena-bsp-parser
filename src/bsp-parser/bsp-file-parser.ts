@@ -16,10 +16,11 @@ export function parseBspFile(buffer: Buffer): BspFile {
 
     const entities = parseEntitiesLump(buffer, entitiesLump);
     const shaders = parseShaders(buffer, shadersLump);
-    const surfaces = parseSurfaces(buffer, surfaceLump, drawVertsLump, drawIndexesLump, shaders);
+    const surfaces = parseSurfaces(buffer, surfaceLump, drawVertsLump, drawIndexesLump);
 
     return {
         entities,
+        shaders,
         surfaces
     }
 }

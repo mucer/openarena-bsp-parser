@@ -3,5 +3,6 @@ import { Rgba } from "./rgba";
 
 export interface Vert {
     position: Vector;
+    st: number[];
     color?: Rgba;
 }

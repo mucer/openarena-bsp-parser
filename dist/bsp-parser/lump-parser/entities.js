@@ -1,18 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var CHAR_OBJ_START = '{'.charCodeAt(0);
-var CHAR_OBJ_END = '}'.charCodeAt(0);
-var CHAR_STR = '"'.charCodeAt(0);
+const CHAR_OBJ_START = '{'.charCodeAt(0);
+const CHAR_OBJ_END = '}'.charCodeAt(0);
+const CHAR_STR = '"'.charCodeAt(0);
 // TODO improve error messages (include index, ...)
-function parseEntitiesLump(buffer, _a) {
-    var offset = _a.offset, length = _a.length;
-    var entity;
-    var str;
-    var key;
-    var entities = {};
-    var max = offset + length;
-    for (var i = offset; i < max; i++) {
-        var char = buffer.readUInt8(i);
+function parseEntitiesLump(buffer, { offset, length }) {
+    let entity;
+    let str;
+    let key;
+    const entities = {};
+    const max = offset + length;
+    for (let i = offset; i < max; i++) {
+        const char = buffer.readUInt8(i);
         if (char === CHAR_OBJ_START) {
             if (entity !== undefined) {
                 throw new Error('already in object');
@@ -24,12 +23,12 @@ function parseEntitiesLump(buffer, _a) {
                 throw new Error('not in object');
             }
             if (str !== undefined) {
-                throw new Error("string '" + str + "' not closed");
+                throw new Error(`string '${str}' not closed`);
             }
             if (key !== undefined) {
-                throw new Error("no value for key '" + key + "' found!");
+                throw new Error(`no value for key '${key}' found!`);
             }
-            var c = entity.classname;
+            const c = entity.classname;
             if (!c) {
                 throw new Error('no classname in object: ' + JSON.stringify(entity));
             }

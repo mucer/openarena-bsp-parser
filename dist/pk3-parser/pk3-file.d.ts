@@ -14,4 +14,5 @@ export declare class Pk3File {
     getLevelshots(): Dictionary<string>;
     getLevelshotPath(name: string): string | undefined;
     addTexture(path: string): void;
+    getTexturePath(path: string): string | undefined;
 }

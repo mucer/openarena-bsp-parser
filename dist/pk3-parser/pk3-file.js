@@ -1,41 +1,46 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var path_1 = require("path");
-var Pk3File = /** @class */ (function () {
-    function Pk3File(path) {
+const path_1 = require("path");
+class Pk3File {
+    constructor(path) {
         this.path = path;
         this.maps = {};
         this.textures = [];
         this.levelshots = {};
         this.name = path_1.basename(path);
     }
-    Pk3File.prototype.getName = function () {
+    getName() {
         return this.name;
-    };
-    Pk3File.prototype.getPath = function () {
+    }
+    getPath() {
         return this.path;
-    };
-    Pk3File.prototype.addMap = function (name, path) {
+    }
+    addMap(name, path) {
         this.maps[name] = path;
-    };
-    Pk3File.prototype.getMapPath = function (name) {
+    }
+    getMapPath(name) {
         return this.maps[name];
-    };
-    Pk3File.prototype.addLevelshot = function (name, path) {
+    }
+    addLevelshot(name, path) {
         this.levelshots[name] = path;
-    };
-    Pk3File.prototype.getLevelshots = function () {
+    }
+    getLevelshots() {
         return this.levelshots;
-    };
-    Pk3File.prototype.getLevelshotPath = function (name) {
+    }
+    getLevelshotPath(name) {
         return this.levelshots[name];
-    };
-    Pk3File.prototype.addTexture = function (path) {
+    }
+    addTexture(path) {
         if (!this.textures.includes(path)) {
             this.textures.push(path);
         }
-    };
-    return Pk3File;
-}());
+    }
+    getTexturePath(path) {
+        const fn = path.includes('.')
+            ? (t) => t === path
+            : (t) => t.slice(0, -4) === path;
+        return this.textures.find(fn);
+    }
+}
 exports.Pk3File = Pk3File;
 //# sourceMappingURL=pk3-file.js.map

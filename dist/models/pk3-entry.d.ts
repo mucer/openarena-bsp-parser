@@ -1,7 +1,5 @@
-/// <reference types="node" />
 export interface Pk3Entry {
+    pk3Name: string;
+    pk3Path: string;
     path: string;
-    buffer: Buffer;
-    wait: boolean;
-    next(): void;
 }

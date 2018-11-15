@@ -33,7 +33,7 @@ export function parseEntitiesLump(buffer: Buffer, { offset, length }: Lump): Ent
                 throw new Error('no classname in object: ' + JSON.stringify(entity));
             }
             delete entity.classname;
-            (entities[c] = entities[c] || []).push(entity);
+            ((entities as any)[c] = (entities as any)[c] || []).push(entity);
             entity = undefined;
         } else if (char === CHAR_STR) {
             if (entity === undefined) {

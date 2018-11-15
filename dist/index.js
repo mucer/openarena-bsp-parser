@@ -4,8 +4,8 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./bsp-parser/bsp-file-parser"));
+__export(require("./models"));
 __export(require("./pk3-parser/pk3-collection"));
 __export(require("./pk3-parser/pk3-file"));
 __export(require("./pk3-parser/pk3-parser"));
-__export(require("./models"));
 //# sourceMappingURL=index.js.map
