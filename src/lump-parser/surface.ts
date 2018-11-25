@@ -1,4 +1,4 @@
-import { Lump, Surface, SurfaceType, Vert } from '../../models';
+import { Lump, Surface, SurfaceType, Vert } from '../models';
 import { DrawVertStruct } from '../structs/draw-vert-struct';
 import { SurfaceStruct } from '../structs/surface-struct';
 

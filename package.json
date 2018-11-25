@@ -1,32 +1,30 @@
 {
-  "name": "openarena-pk3-parser",
+  "name": "openarena-bsp-parser",
   "version": "0.1.0",
-  "description": "This library can be used to inspect OpenArena PK3 files and the contained BSP files",
+  "description": "This library can be used to parse a OpenArena BSP files",
   "main": "dist/index.js",
   "scripts": {
     "build": "rimraf dist && tsc",
     "build:w": "tsc -w",
     "lint": "tslint -p tslint.json",
-    "exec:bsp": "tsc && node dist/test-bsp-parser.js",
-    "exec:pk3": "tsc && node dist/test-pk3-parser.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ts-mocha src/**/*.spec.ts"
   },
   "author": "Daniel Leib",
   "repository": {
     "type": "git",
-    "url": "git@github.com:mucer/openarena-pk3-parser.git"
+    "url": "git@github.com:mucer/openarena-bsp-parser.git"
   },
   "license": "ISC",
   "devDependencies": {
-    "@types/fs-extra": "^5.0.4",
+    "@types/expect": "^1.20.3",
+    "@types/mocha": "^5.2.5",
     "@types/node": "^10.12.7",
-    "@types/unzipper": "^0.9.1",
+    "expect": "^23.6.0",
+    "mocha": "^5.2.0",
     "rimraf": "^2.6.2",
+    "ts-mocha": "^2.0.0",
     "tslint": "^5.11.0",
     "typescript": "^3.1.6"
   },
-  "dependencies": {
-    "fs-extra": "^7.0.1",
-    "unzipper": "^0.9.4"
-  }
+  "dependencies": {}
 }

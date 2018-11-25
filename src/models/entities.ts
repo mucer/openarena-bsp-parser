@@ -93,9 +93,21 @@ export interface Entities {
     // The info_player_intermission entity comes into effect when you go into the spectator mode. The first image you 
     // will see is the one you define via the intermission. Also the podium in single player matches or the final scores 
     // in multiplayer matches are shown in front of the defined view.
-    info_player_intermission?: {}[];
+    info_player_intermission?: {
+        // 3 numbers seperated by space
+        origin: string,
+        // 3 numbers seperated by space
+        angles?: string,
+        // look at this target?
+        target?: string;
+    }[];
     // The nearest target location to the player is the player location
-    target_location?: {}[];
+    target_location?: {
+        // the name of this target
+        targetname: string,
+        // 3 numbers seperated by space
+        origin: string,
+    }[];
 
     // items
     ammo_belt?: Item[];

@@ -1,4 +1,4 @@
-import { SurfaceType, Vector } from "../../models";
+import { SurfaceType, Vector } from "../models";
 
 // typedef struct {
 // 	int			shaderNum;

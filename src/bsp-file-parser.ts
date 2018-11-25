@@ -1,4 +1,4 @@
-import { BspFile, Lump, LumpType } from '../models';
+import { BspFile, Lump, LumpType } from './models';
 import { parseEntitiesLump } from './lump-parser/entities';
 import { parseShaders } from './lump-parser/shaders';
 import { parseSurfaces } from './lump-parser/surface';
