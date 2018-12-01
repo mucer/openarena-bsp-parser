@@ -74,6 +74,7 @@
             "allow-leading-underscore",
             "allow-pascal-case"
         ],
-        "linebreak-style": false
+        "linebreak-style": false,
+        "semicolon": true
     }
 }

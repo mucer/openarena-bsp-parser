@@ -1,19 +1,23 @@
+
 export class Tokenizer {
     private index = 0;
 
-    private line = 1;
+    private lineNo = 1;
 
     constructor(private text: string) {
     }
 
-    public getLine(): number {
-        return this.line
+    /**
+     * @returns the line number where the cursor is currently standing
+     */
+    public getLineNo(): number {
+        return this.lineNo;
     }
 
-    public nextToken(allowLineBreaks: boolean): string | undefined {
+    public nextToken(stopOnLineBreak?: boolean): string | undefined {
         // skip comments and whitespace
         while (true) {
-            if (this.skipWhitespace() && !allowLineBreaks) {
+            if (this.skipWhitespace() && stopOnLineBreak) {
                 return '';
             }
             if (this.nextIs('//')) {
@@ -21,51 +25,70 @@ export class Tokenizer {
                 this.skipLine();
             } else if (this.nextIs('/*')) {
                 this.index += 2;
-                let str: string;
-                while ((str = this.readUntil('/')) && !str.endsWith('*')) {
-                }
+                this.readUntil('*/');
             } else {
                 break;
             }
         }
+
         if (this.index >= this.text.length) {
             return undefined;
         }
 
-        let c: string = this.text[this.index];
-        if (c === '"') {
+        let char: string = this.text[this.index];
+        if (char === '"') {
             this.index += 1;
             return this.readUntil('"');
         }
         let token = '';
-        while ((c = this.text[this.index++]) && c !== ' ' && c !== '\t' &&  c !== '\n' && c !== '\r') {
-            token += c;
+        while ((char = this.text[this.index]) && char !== ' ' && char !== '\t' && char !== '\n' && char !== '\r') {
+            token += char;
+            this.index += 1;
         }
+
         return token;
     }
 
     public all(): string[] {
         const tokens: string[] = [];
-        let token: string | undefined; 
-        while((token = this.nextToken(true))) {
+        let token: string | undefined;
+        while ((token = this.nextToken(false))) {
             tokens.push(token);
         }
         return tokens;
     }
 
+    /**
+     * Skips all chars until a new line was found
+     */
     public skipLine() {
-        this.readUntil('\n');
+        while (this.text.length > this.index) {
+            const char = this.text[this.index++];
+            if (char === '\r') {
+                this.lineNo += 1;
+                if (this.text[this.index] === '\n') {
+                    this.index += 1;
+                }
+                break;
+            } else if (char === '\n') {
+                this.lineNo += 1;
+                break;
+            }
+        }
     }
 
     public skipWhitespace(): boolean {
-        let c: string;
         let hasNewLines = false;
-        while ((c = this.text[this.index]) && (c === ' ' || c === '\t' || c === '\n' || c === '\r')) {
-            hasNewLines = hasNewLines || c === '\n';
-            if (c === '\n') {
-                this.line += 1;
+        while (this.text.length > this.index) {
+            const char = this.text[this.index];
+            if (char === '\n' || char === '\r') {
+                this.skipLine();
+                hasNewLines = true;
+            } else if (char === ' ' || char === '\t') {
+                this.index += 1;
+            } else {
+                break;
             }
-            this.index += 1;
         }
         return hasNewLines;
     }
@@ -83,20 +106,22 @@ export class Tokenizer {
      * The search string will not be included. The cursor will be behind the search string.
      */
     public readUntil(search: string): string {
-        if (search.length !== 1) {
-            throw new Error(`Search string must be single char, was '${search}'`);
-        }
-        let c: string | undefined;
-        let res = '';
-        while (c = this.text[this.index]) {
-            if (c === '\n') {
-                this.line += 1;
-            }
-            this.index += 1;
-            if (c === search) {
+        let res: string = '';
+        while (this.text.length > this.index) {
+            const char = this.text[this.index];
+            if (this.nextIs(search)) {
+                res += search;
+                this.index += search.length;
                 break;
             }
-            res += c;
+
+            if (char === '\n' || char === '\r') {
+                this.skipLine();
+                res += '\n';
+            } else {
+                res += char;
+                this.index += 1;
+            }
         }
         return res;
     }

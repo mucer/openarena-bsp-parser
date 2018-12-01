@@ -12,7 +12,7 @@ const OFFSET_POS = 0;
 const OFFSET_ST = OFFSET_POS + 12;
 const OFFSET_LIGHTMAP = OFFSET_ST + 8;
 const OFFSET_NORMAL = OFFSET_LIGHTMAP + 8;
-const OFFSET_COLOR = OFFSET_NORMAL + 12
+const OFFSET_COLOR = OFFSET_NORMAL + 12;
 const VECT_LENGTH = OFFSET_COLOR + 4;
 
 export class DrawVertStruct {
@@ -26,7 +26,7 @@ export class DrawVertStruct {
             x: this.buffer.readFloatLE(this.offset + OFFSET_POS),
             y: this.buffer.readFloatLE(this.offset + OFFSET_POS + 4),
             z: this.buffer.readFloatLE(this.offset + OFFSET_POS + 8)
-        }
+        };
     }
 
     public getSt(): number[] {
@@ -49,6 +49,6 @@ export class DrawVertStruct {
             g: this.buffer.readUInt8(this.offset + OFFSET_COLOR + 1),
             b: this.buffer.readUInt8(this.offset + OFFSET_COLOR + 2),
             a: this.buffer.readUInt8(this.offset + OFFSET_COLOR + 3)
-        }
+        };
     }
 }

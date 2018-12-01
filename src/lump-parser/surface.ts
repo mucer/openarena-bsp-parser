@@ -16,7 +16,7 @@ export function parseSurfaces(buffer: Buffer, surfaceLump: Lump, drawVertsLump: 
     const surfaceStruct = new SurfaceStruct(buffer);
 
     const allVerts: Vert[] = parseVerts(buffer, drawVertsLump);
-    const allIndexes: number[] = parseIndexes(buffer, drawIndexesLump)
+    const allIndexes: number[] = parseIndexes(buffer, drawIndexesLump);
     const surfaces: Surface[] = [];
     let numMeshes = 0;
     let numTriSurfs = 0;

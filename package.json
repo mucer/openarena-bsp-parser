@@ -6,7 +6,8 @@
   "scripts": {
     "build": "rimraf dist && tsc",
     "build:w": "tsc -w",
-    "lint": "tslint -p tslint.json",
+    "lint": "tslint -p tsconfig.json -c tslint.json",
+    "lint:fix": "tslint -p tsconfig.json -c tslint.json --fix",
     "test": "ts-mocha src/**/*.spec.ts"
   },
   "author": "Daniel Leib",
@@ -18,7 +19,7 @@
   "devDependencies": {
     "@types/expect": "^1.20.3",
     "@types/mocha": "^5.2.5",
-    "@types/node": "^10.12.7",
+    "@types/node": "^10.12.10",
     "expect": "^23.6.0",
     "mocha": "^5.2.0",
     "rimraf": "^2.6.2",

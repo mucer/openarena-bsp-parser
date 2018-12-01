@@ -22,5 +22,5 @@ export function parseBspFile(buffer: Buffer): BspFile {
         entities,
         shaders,
         surfaces
-    }
+    };
 }

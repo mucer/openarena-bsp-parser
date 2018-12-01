@@ -6,7 +6,7 @@ export function parseShaderFile(shaderText: string): Shader[] {
     const tokenizer = new Tokenizer(shaderText);
     let token: string | undefined;
     const shaders: Shader[] = [];
-    while (token = tokenizer.nextToken(true)) {
+    while (token = tokenizer.nextToken()) {
         shaders.push(parseShader(tokenizer, token.toLowerCase()));
     }
 
@@ -24,7 +24,7 @@ export interface Shader {
       This is a savings for smoke puffs and blood, but can't be used for anything where the shader calcs 
       (not the surface function) reference the entity color or scroll */
     entityMergable: boolean;
-};
+}
 
 export interface ShaderStage {
     map?: string;
@@ -42,16 +42,18 @@ function parseShader(tokenizer: Tokenizer, name: string): Shader {
     };
 
     try {
-        let token: string | undefined;
-        if ((token = tokenizer.nextToken(true)) !== '{') {
-            throw new Error(`Open bracket after shader name expected (was '${token}', line ${tokenizer.getLine()})`);
+        // console.log(`new shader: ${name}`);
+
+        if (tokenizer.nextToken() !== '{') {
+            throw new Error('Open bracket after shader name expected');
         }
 
         while (true) {
-            token = tokenizer.nextToken(true);
+            let token = tokenizer.nextToken();
             if (!token) {
                 throw new Error('Unexpected end of shader definition');
             }
+            // console.log(`shader token: ${token}`);
 
             // skip stuff that only the QuakeEdRadient or q3map needs
             if (token.startsWith('qer') || token.startsWith('q3map')) {
@@ -64,7 +66,7 @@ function parseShader(tokenizer: Tokenizer, name: string): Shader {
                     return shader;
                 case '{':
                     if (shader.stages.length === MAX_SHADER_STAGES) {
-                        throw new Error(`Maximum shader stages reached! (line ${tokenizer.getLine()})`);
+                        throw new Error(`Maximum shader stages reached!`);
                     }
                     const stage = parseShaderStage(tokenizer);
                     if (stage.map) {
@@ -85,7 +87,7 @@ function parseShader(tokenizer: Tokenizer, name: string): Shader {
                     shader.entityMergable = true;
                     break;
                 case 'cull':
-                    token = tokenizer.nextToken(false);
+                    token = tokenizer.nextToken(true);
                     if (token === 'none' || token === 'twosided' || token === 'disable') {
                         shader.cullType = 'both';
                     } else if (token === 'front' || token === 'frontside' || token === 'frontsided') {
@@ -93,7 +95,7 @@ function parseShader(tokenizer: Tokenizer, name: string): Shader {
                     } else if (token === 'back' || token === 'backside' || token === 'backsided') {
                         shader.cullType = 'back';
                     } else {
-                        console.warn(`Invalid cull parm '${token}' in shader '${name}' (line ${tokenizer.getLine()})`);
+                        console.warn(`Invalid cull parm '${token}' in shader '${name}' (line ${tokenizer.getLineNo()})`);
                     }
                     break;
                 case 'tesssize':
@@ -107,12 +109,11 @@ function parseShader(tokenizer: Tokenizer, name: string): Shader {
                     tokenizer.skipLine();
                     break;
                 default:
-                    console.warn(`Unsupported shader parameter '${token}' in shader '${name}' (line ${tokenizer.getLine()})`);
-                    tokenizer.skipLine();
+                    throw new Error(`Unsupported shader parameter '${token}'`);
             }
         }
     } catch (e) {
-        e.message = `Error parsing shader '${name}: ${e.message} (line ${tokenizer.getLine()})`;
+        e.message = `Error parsing shader '${name}': ${e.message} (line ${tokenizer.getLineNo()})`;
         throw e;
     }
 }
@@ -120,17 +121,18 @@ function parseShader(tokenizer: Tokenizer, name: string): Shader {
 function parseShaderStage(tokenizer: Tokenizer): ShaderStage {
     const stage: ShaderStage = {};
     while (true) {
-        let token = tokenizer.nextToken(true);
+        let token = tokenizer.nextToken();
         if (!token) {
             throw new Error(`no matching '}' found`);
         }
+        // console.log(`stage token: ${token}`);
         switch (token.toLowerCase()) {
             case '}':
                 return stage;
             case 'map':
-                token = tokenizer.nextToken(false);
+                token = tokenizer.nextToken(true);
                 if (!token) {
-                    throw new Error(`no value for parameter 'map' (line ${tokenizer.getLine()})`)
+                    throw new Error(`no value for parameter 'map'`);
                 }
                 if (token !== '$whiteimage' && token !== '$lightmap') {
                     stage.map = token;
@@ -152,8 +154,7 @@ function parseShaderStage(tokenizer: Tokenizer): ShaderStage {
                 tokenizer.skipLine();
                 break;
             default:
-                console.warn(`Unknown stage parameter '${token}' (line ${tokenizer.getLine()})`);
-                tokenizer.skipLine();
+                throw new Error(`Unknown stage parameter '${token}'`);
         }
     }
 }
