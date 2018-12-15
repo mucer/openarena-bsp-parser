@@ -28,6 +28,10 @@ export interface Shader {
 
 export interface ShaderStage {
     map?: string;
+    rgbGen?: string;
+    tcGen?: string;
+    tcMod?: string;
+    blendfunc?: string;
 }
 
 function parseShader(tokenizer: Tokenizer, name: string): Shader {
@@ -139,13 +143,21 @@ function parseShaderStage(tokenizer: Tokenizer): ShaderStage {
                 }
                 break;
             case 'blendfunc':
+                stage.blendfunc = tokenizer.skipLine().trim();
+                break;
             case 'rgbgen':
+                stage.rgbGen = tokenizer.skipLine().trim();
+                break;
             case 'tcgen':
+                stage.tcGen = tokenizer.skipLine().trim();
+                break;
+            case 'tcmod':
+                stage.tcMod = tokenizer.skipLine().trim();
+                break;
             case 'alphagen':
             case 'animmap':
             case 'clampmap':
             case 'videomap':
-            case 'tcmod':
             case 'detail':
             case 'alphafunc':
             case 'depthfunc':

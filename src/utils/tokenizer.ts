@@ -61,7 +61,8 @@ export class Tokenizer {
     /**
      * Skips all chars until a new line was found
      */
-    public skipLine() {
+    public skipLine(): string {
+        let str = '';
         while (this.text.length > this.index) {
             const char = this.text[this.index++];
             if (char === '\r') {
@@ -74,7 +75,9 @@ export class Tokenizer {
                 this.lineNo += 1;
                 break;
             }
+            str += char;
         }
+        return str;
     }
 
     public skipWhitespace(): boolean {
