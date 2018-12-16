@@ -1,7 +1,7 @@
-import { BspFile, Lump, LumpType } from './models';
-import { parseEntitiesLump } from './lump-parser/entities';
-import { parseShaders } from './lump-parser/shaders';
-import { parseSurfaces } from './lump-parser/surface';
+import { BspFile, Lump, LumpType } from '../models';
+import { parseEntitiesLump } from './lumps/entities';
+import { parseShaders } from './lumps/shaders';
+import { parseSurfaces } from './lumps/surface';
 import { HeaderStruct } from './structs/header-struct';
 
 export function parseBspFile(buffer: Buffer): BspFile {

@@ -1,4 +1,4 @@
-import { Lump, BspShader } from "../models";
+import { Lump, BspShader } from "../../models";
 import { ShaderStruct } from "../structs/shader-struct";
 
 

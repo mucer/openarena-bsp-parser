@@ -1,4 +1,4 @@
-import { Tokenizer } from './utils/tokenizer';
+import { Tokenizer } from '../utils/tokenizer';
 
 const MAX_SHADER_STAGES = 8;
 
