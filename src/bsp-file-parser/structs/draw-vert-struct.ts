@@ -1,4 +1,4 @@
-import { Rgba, Vector } from "../models";
+import { Rgba, Vector } from "../../models";
 
 // typedef struct {
 // 	vec3_t		xyz;
