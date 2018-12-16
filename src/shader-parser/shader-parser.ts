@@ -1,8 +1,9 @@
+import { Shader, ShaderStage } from '../models';
 import { Tokenizer } from '../utils/tokenizer';
 
 const MAX_SHADER_STAGES = 8;
 
-export function parseShaderFile(shaderText: string): Shader[] {
+export function parseShaders(shaderText: string): Shader[] {
     const tokenizer = new Tokenizer(shaderText);
     let token: string | undefined;
     const shaders: Shader[] = [];
@@ -11,27 +12,6 @@ export function parseShaderFile(shaderText: string): Shader[] {
     }
 
     return shaders;
-}
-
-export interface Shader {
-    name: string;
-    stages: ShaderStage[];
-    cullType: 'front' | 'back' | 'both';
-    noMipMaps: boolean;
-    noPicMip: boolean;
-    polygonOffset: boolean;
-    /** entityMergable, allowing sprite surfaces from multiple entities to be merged into one batch.
-      This is a savings for smoke puffs and blood, but can't be used for anything where the shader calcs 
-      (not the surface function) reference the entity color or scroll */
-    entityMergable: boolean;
-}
-
-export interface ShaderStage {
-    map?: string;
-    rgbGen?: string;
-    tcGen?: string;
-    tcMod?: string;
-    blendfunc?: string;
 }
 
 function parseShader(tokenizer: Tokenizer, name: string): Shader {

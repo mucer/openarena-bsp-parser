@@ -1,4 +1,4 @@
-import { Lump, BspShader } from "../../models";
+import { Lump, ShaderRef } from "../../models";
 import { ShaderStruct } from "../structs/shader-struct";
 
 
@@ -48,12 +48,12 @@ const SURF_ALPHASHADOW = 0x10000; // do per-pixel light shadow casting in q3map
 const SURF_NODLIGHT = 0x20000; // don't dlight even if solid (solid lava, skies)
 const SURF_DUST = 0x40000; // leave a dust trail when walking on this surface
 
-export function parseShaders(buffer: Buffer, lump: Lump): BspShader[] {
+export function parseShaders(buffer: Buffer, lump: Lump): ShaderRef[] {
     if (lump.length % ShaderStruct.LENGTH) {
         throw new Error(`The shader lumps length must be a multiple of ${ShaderStruct.LENGTH}, was ${lump.length}`);
     }
     const num = lump.length / ShaderStruct.LENGTH;
-    const shaders: BspShader[] = [];
+    const shaders: ShaderRef[] = [];
     const struct = new ShaderStruct(buffer);
 
     for (let i = 0; i < num; i++) {
