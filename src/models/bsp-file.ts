@@ -1,9 +1,9 @@
 import { Entities } from './entities';
-import { BspShader } from './bsp-shader';
+import { ShaderRef } from './shader-ref';
 import { Surface } from './surface';
 
 export interface BspFile {
     entities: Entities;
-    shaders: BspShader[];
+    shaders: ShaderRef[];
     surfaces: Surface[];
 }
